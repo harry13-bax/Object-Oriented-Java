@@ -1,0 +1,124 @@
+Import java.util.scanner;
+class Account {
+    String customerName;
+    String accountNumber;
+    String accountType;
+
+    Account(String customerName, String accountNumber, String accountType) {
+        this.customerName = customerName;
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+    }
+
+    void displayDetails() {
+        System.out.println("Customer Name: " + customerName);
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Type: " + accountType);
+    }
+}
+
+class SavAcct extends Account {
+    double balance;
+
+    SavAcct(String customerName, String accountNumber, double balance) {
+        super(customerName, accountNumber, "Savings");
+        this.balance = balance;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited: " + amount + ", New Balance: " + balance);
+    }
+
+    void withdraw(double amount) {
+        if (amount > balance) {
+            System.out.println("Insufficient balance");
+        } else {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount + ", Remaining Balance: " + balance);
+        }
+    }
+
+    void computeInterest(double rate, int time) {
+        double interest = balance * Math.pow(1 + rate / 100, time) - balance;
+        balance += interest;
+        System.out.println("Interest: " + interest + ", Updated Balance: " + balance);
+    }
+}
+
+class CurAcct extends Account {
+    double balance;
+    double minimumBalance;
+    double serviceCharge;
+
+    CurAcct(String customerName, String accountNumber, double balance, double minimumBalance, double serviceCharge) {
+        super(customerName, accountNumber, "Current");
+        this.balance = balance;
+        this.minimumBalance = minimumBalance;
+        this.serviceCharge = serviceCharge;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited: " + amount + ", New Balance: " + balance);
+    }
+
+    void withdraw(double amount) {
+        if (amount > balance) {
+            System.out.println("Insufficient balance");
+        } else {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount + ", Remaining Balance: " + balance);
+            checkMinimumBalance();
+        }
+    }
+
+    void checkMinimumBalance() {
+        if (balance < minimumBalance) {
+            balance -= serviceCharge;
+            System.out.println("Balance below minimum. Service charge imposed. New Balance: " + balance);
+        }
+    }
+
+    void chequeBookFacility() {
+        System.out.println("Cheque book facility is available.");
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Customer Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Account Number: ");
+        String accNumber = scanner.nextLine();
+        System.out.print("Enter Account Type (Savings/Current): ");
+        String accType = scanner.nextLine();
+
+        switch (accType.toLowerCase()) {
+            case "savings":
+                System.out.print("Enter Initial Balance: ");
+                double savingsBalance = scanner.nextDouble();
+                SavAcct savingsAccount = new SavAcct(name, accNumber, savingsBalance);
+                savingsAccount.displayDetails();
+                savingsAccount.deposit(1000);
+                savingsAccount.withdraw(500);
+                savingsAccount.computeInterest(5, 1);
+                break;
+
+            case "current":
+                System.out.print("Enter Initial Balance: ");
+                double currentBalance = scanner.nextDouble();
+                CurAcct currentAccount = new CurAcct(name, accNumber, currentBalance, 1000, 50);
+                currentAccount.displayDetails();
+                currentAccount.chequeBookFacility();
+                currentAccount.deposit(1000);
+                currentAccount.withdraw(1500);
+                currentAccount.withdraw(600);
+                break;
+
+            default:
+                System.out.println("Invalid Account Type");
+        }
+    }
+}
