@@ -1,0 +1,75 @@
+import java.util.Scanner;
+
+class Book {
+    private String name;
+    private String author;
+    private double price;
+    private int num_pages;
+
+    Book(String name, String author, double price, int num_pages) {
+        this.name = name;
+        this.author = author;
+        this.price = price;
+        this.num_pages = num_pages;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    void setAuthor(String author) {
+        this.author = author;
+    }
+
+    String getAuthor() {
+        return author;
+    }
+
+    void setPrice(double price) {
+        this.price = price;
+    }
+
+    double getPrice() {
+        return price;
+    }
+
+    void setNumPages(int num_pages) {
+        this.num_pages = num_pages;
+    }
+
+    int getNumPages() {
+        return num_pages;
+    }
+
+    public String toString() {
+        return "Name: " + name + ", Author: " + author + ", Price: " + price + ", Pages: " + num_pages;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of books: ");
+        int n = scanner.nextInt();
+        Book[] books = new Book[n];
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter details for book " + (i + 1));
+            scanner.nextLine();
+            System.out.print("Enter name: ");
+            String name = scanner.nextLine();
+            System.out.print("Enter author: ");
+            String author = scanner.nextLine();
+            System.out.print("Enter price: ");
+            double price = scanner.nextDouble();
+            System.out.print("Enter number of pages: ");
+            int num_pages = scanner.nextInt();
+            books[i] = new Book(name, author, price, num_pages);
+        }
+        System.out.println("Book Details:");
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+}
